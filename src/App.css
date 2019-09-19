@@ -1,22 +1,23 @@
-.App {
-  text-align: center;
+.players {
+  margin: -16px;
+}
+.player {
+  display: inline-flex;
+  flex-flow: column;
+  margin: 16px;
+}
+.you{
+  margin: auto;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.cards {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: -8px;
 }
 
-.App-link {
-  color: #09d3ac;
+.card {
+  display: flex;
+  border: solid 1px;
+  padding: 8px;
+  margin: 8px;
 }
