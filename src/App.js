@@ -1,34 +1,27 @@
 import React from 'react';
 import './App.css';
-
-const Card = ({title}) =>
-    <div className="card">{title}</div>;
-
-const Cards = ({cards}) =>
-    <div className="cards">
-        {cards.map(title => <Card title={title}/>)}
-    </div>;
-
-const Player = ({playerName, cards}) =>
-    <li className="player">
-        <h3>{playerName}</h3>
-        <Cards cards={cards}/>
-    </li>;
-
-const Players = ({players}) =>
-    <ul>
-        {players.map(({playerName, cards}) => <Player playerName={playerName} cards={cards}/>)}
-    </ul>;
+import {addPlayer, startGame} from './players-reducer';
+import store from './players-reducer';
+import {Player, Players} from './Players';
+import {Provider} from 'react-redux';
 
 function App() {
     return (
         <div className="App">
             <header>Title/Header</header>
+            <input defaultValue="test" type="text" id='newPlayer'/>
+            <button onClick={() => {
+                let name = document.getElementById('newPlayer').value;
+                console.info('new', name);
+                store.dispatch(addPlayer({name}));
+            }}>Add Player
+            </button>
+            <button onClick={() => store.dispatch(startGame())}>Start</button>
             <h2>Adversaires</h2>
             <div className="players">
-                <Players players={[{playerName: 'kikoo', cards: ['Carte 1', 'Carte 2']}]}/>
+                <Provider store={store}><Players players={store.getState()}/></Provider>
             </div>
-            <Player playerName={"YOU"} cards={['Carte 1']} />
+            <Player playerName={'YOU'} cards={['Carte 1']}/>
         </div>
     );
 }

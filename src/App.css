@@ -1,23 +1,25 @@
 .players {
-  margin: -16px;
+    margin: -16px;
 }
+
 .player {
-  display: inline-flex;
-  flex-flow: column;
-  margin: 16px;
+    display: inline-flex;
+    flex-flow: column;
+    margin: 16px;
 }
-.you{
-  margin: auto;
+
+.you {
+    margin: auto;
 }
 
 .cards {
-  display: flex;
-  margin: -8px;
+    display: flex;
+    margin: -8px;
 }
 
 .card {
-  display: flex;
-  border: solid 1px;
-  padding: 8px;
-  margin: 8px;
+    display: flex;
+    border: solid 1px;
+    padding: 8px;
+    margin: 8px;
 }
