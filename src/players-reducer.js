@@ -3,6 +3,7 @@ import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import shuffleArray from 'shuffle-array';
+
 const middlewares = [thunk];
 
 if (process.env.NODE_ENV === 'development') {
@@ -26,19 +27,24 @@ const initialPlayerState = {
             cards: []
         }
     },
+    stockCards: [],
+    wasteCards: [],
+    roomId: 0,
     currentPlayerName: ''
 };
 
-let cardsStock = [];
-let cardsJunk = [];
-let DUPLICATION_CARD = 4;
-let CARD_INDEX = 13;
+const DUPLICATION_CARD = 4;
+const CARD_INDEX = 13;
 const cardsInGame = CARD_INDEX * DUPLICATION_CARD;
 
-const triceCards = (cards) => {
+const setInitialCards = () => {
+    const cards = [];
     for (let i = 0; i < (cardsInGame); i++) {
         cards.push((i % CARD_INDEX) + 1);
     }
+    return cards;
+};
+const triceCards = (cards) => {
     return shuffleArray(cards);
 };
 
@@ -56,22 +62,22 @@ const playersReducer = createReducer({
             players
         };
     },
-    [START_GAME]: (state, data) => {
-        cardsStock = triceCards(cardsStock);
+    [START_GAME]: (state) => {
+        const stockCards = triceCards(setInitialCards());
         const players = {...state.players};
-        const lol = Object.keys(players).reduce((accPlayers, playerName) => {
-            console.info({accPlayers, playerName});
+        const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
+            accPlayers.players[playerName].name = playerName;
             accPlayers.players[playerName].cards = [];
-            accPlayers.players[playerName].cards.push(cardsStock.shift());
-            accPlayers.players[playerName].cards.push(cardsStock.shift());
-            accPlayers.players[playerName].cards.push(cardsStock.shift());
-            accPlayers.players[playerName].cards.push(cardsStock.shift());
-            console.info(cardsStock);
+            accPlayers.players[playerName].cards.push(stockCards.shift());
+            accPlayers.players[playerName].cards.push(stockCards.shift());
+            accPlayers.players[playerName].cards.push(stockCards.shift());
+            accPlayers.players[playerName].cards.push(stockCards.shift());
             return accPlayers;
         }, {...state});
-        console.info(lol);
         return {
-            ...state
+            ...state,
+            players: updatedPlayers.players,
+            stockCards
         };
     }
 
