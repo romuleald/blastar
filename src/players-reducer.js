@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import {createReducer} from './create-reducer';
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
@@ -35,18 +36,48 @@ const initialPlayerState = {
 
 const DUPLICATION_CARD = 4;
 const CARD_INDEX = 13;
-const cardsInGame = CARD_INDEX * DUPLICATION_CARD;
+const HERO_NUMBER = 8;
+const BOSS_NUMBER = 6;
 
-const setInitialCards = () => {
-    const cards = [];
-    for (let i = 0; i < (cardsInGame); i++) {
-        cards.push((i % CARD_INDEX) + 1);
-    }
-    return cards;
-};
-const triceCards = (cards) => {
-    return shuffleArray(cards);
-};
+const generateHeroes = () => R.pipe(
+    shuffleArray,
+    R.take(4),
+    R.map(R.toString),
+    R.map(R.concat('0.'))
+)(R.range(0, HERO_NUMBER));
+
+const generateBosses = () => R.pipe(
+    shuffleArray,
+    R.take(2),
+    R.map(R.toString),
+    R.map(R.concat('14.'))
+)(R.range(0, BOSS_NUMBER));
+
+const setInitialCards = () => R.pipe(
+    R.map(R.add(1)),
+    R.map(R.toString),
+    R.map(
+        cardIndex => {
+            if (cardIndex === '6') {
+                return (
+                    R.zip(
+                        R.repeat(cardIndex, DUPLICATION_CARD),
+                        ['0', '0', '1', '1']
+                    )).map(R.join('.'));
+            }
+            if (cardIndex === '13') {
+                return R.zip(
+                    R.repeat(cardIndex, DUPLICATION_CARD),
+                    ['0', '1', '2', '3']
+                ).map(R.join('.'));
+            }
+            return R.repeat(cardIndex, DUPLICATION_CARD);
+        }
+    ),
+    R.flatten,
+    R.concat(generateHeroes()),
+    R.concat(generateBosses())
+)(R.range(0, CARD_INDEX));
 
 // REDUCERS
 const playersReducer = createReducer({
@@ -64,7 +95,7 @@ const playersReducer = createReducer({
     },
     [START_GAME]: (state) => {
         const isVisible = false;
-        const stockCards = triceCards(setInitialCards());
+        const stockCards = shuffleArray(setInitialCards());
         const players = {...state.players};
         const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
             accPlayers.players[playerName].name = playerName;
