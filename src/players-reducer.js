@@ -63,15 +63,16 @@ const playersReducer = createReducer({
         };
     },
     [START_GAME]: (state) => {
+        const isVisible = false;
         const stockCards = triceCards(setInitialCards());
         const players = {...state.players};
         const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
             accPlayers.players[playerName].name = playerName;
             accPlayers.players[playerName].cards = [];
-            accPlayers.players[playerName].cards.push(stockCards.shift());
-            accPlayers.players[playerName].cards.push(stockCards.shift());
-            accPlayers.players[playerName].cards.push(stockCards.shift());
-            accPlayers.players[playerName].cards.push(stockCards.shift());
+            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
             return accPlayers;
         }, {...state});
         return {

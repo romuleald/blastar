@@ -2,13 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {PLAYERS} from './players-reducer';
 
-export const Card = ({title}) => {
-    return <div className="card">{title}</div>;
-};
+export const Card = ({title, isVisible}) => <div className="card">{isVisible ? title : '💀'}</div>;
 
 const Cards = ({cards}) =>
     <div className="cards">
-        {cards.map((title, index) => <Card key={index} title={title}/>)}
+        {cards.map(({value:title, isVisible}, index) => <Card key={index} title={title} isVisible={isVisible}/>)}
     </div>;
 
 export const Player = ({playerName, cards}) =>

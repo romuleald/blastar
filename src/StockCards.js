@@ -3,7 +3,10 @@ import {connect} from 'react-redux';
 import {PLAYERS} from './players-reducer';
 import {Card} from './Players';
 
-export const StockCardsComponent = ({title}) => <Card title={title}/>;
+export const StockCardsComponent = ({title}) => <div className="stock-card">
+    <Card title={title}/>
+    <Card title={title} isVisible/>
+</div>;
 
 const mapStateToProps = (state) => {
     console.info({state});

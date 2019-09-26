@@ -24,6 +24,10 @@
     margin: 8px;
 }
 
-.stock-cards{
+.stock-cards {
+    display: flex;
+}
+
+.stock-card {
     display: flex;
 }
