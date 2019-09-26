@@ -1,5 +1,17 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Todo
+* [ ] drag & drop cards
+* [ ] differentiate current and other players
+* [ ] Adding a card to a player
+* [ ] Removing a card to a player
+* [ ] Flipping a card to a player
+* [ ] Exchanging a card between 2 player
+* [ ] Watch own player card
+* [ ] Watch other player card
+* [ ] BLAST button
+* [ ] Point counting
+
 ## Available Scripts
 
 In the project directory, you can run:
