@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 export const PLAYERS = 'PLAYERS';
 const ADD_PLAYER = 'ADD_PLAYER';
 const REMOVE_PLAYER = 'REMOVE_PLAYER';
-const ADD_CARD = 'ADD_CARD';
+const ADD_PUNITIVE_CARD = 'ADD_PUNITIVE_CARD';
 const REMOVE_CARD = 'REMOVE_CARD';
 const CHANGE_CARD = 'CHANGE_CARD';
 const START_GAME = 'START_GAME';
@@ -93,6 +93,15 @@ const playersReducer = createReducer({
             players
         };
     },
+    [ADD_PUNITIVE_CARD]: (state, data) => {
+        const {name} = data;
+        const {players} = state;
+        const card = state.stockCards.splice(1, 1);
+        players[name].cards.push(card[0]);
+        return {
+            ...state
+        };
+    },
     [START_GAME]: (state) => {
         const isVisible = false;
         const stockCards = shuffleArray(setInitialCards());
@@ -124,11 +133,10 @@ export const addPlayer = ({name}) => ({
     }
 });
 
-export const addCard = ({name, card}) => ({
-    type: ADD_PLAYER,
+export const addPunitiveCard = ({name}) => ({
+    type: ADD_PUNITIVE_CARD,
     data: {
         name,
-        card
     }
 });
 export const startGame = () => ({

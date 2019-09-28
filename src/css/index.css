@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    background: #282c34;
+    color: blanchedalmond;
+}
+
+.dev-helpers {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px;
+    border: solid 1px #341527;
+    background: #7d8088;
+}
+
+.dev-helpers h2 {
+    flex: 1 0 100%;
+    margin: 0;
+}
+
+.dev-helpers div {
+    border: solid 1px #341527;
+    margin-right: -1px;
+    padding: 8px;
+}
+

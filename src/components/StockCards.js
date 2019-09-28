@@ -1,20 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {PLAYERS} from './players-reducer';
-import {Card} from './Players';
+import {PLAYERS} from '../reducer/players-reducer';
+import {Card} from './Cards';
 
-export const StockCardsComponent = ({title}) => <div className="stock-card">
+export const StockCardsComponent = ({title, totalStockCards}) => <div className="stock-card">
+    <h2>Pioche ({totalStockCards}) :</h2>
     <Card title={title}/>
     <Card title={title} isVisible/>
 </div>;
 
 const mapStateToProps = (state) => {
-    console.info({state});
-    return {title: state[PLAYERS].stockCards[0]};
+    const title = state[PLAYERS].stockCards[0];
+    const totalStockCards = state[PLAYERS].stockCards.length;
+    return {title, totalStockCards};
 };
 
 const mapDispatchToProps = (dispatch, {state}) => {
-    console.info(state[PLAYERS].stockCards);
     return {stockCard: state[PLAYERS].stockCards};
 };
 
