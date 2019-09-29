@@ -1,8 +1,24 @@
 import React from 'react';
+import store, {flipCard} from '../reducer/players-reducer';
 
-export const Card = ({title, isVisible}) => <div className="card">{isVisible ? title : '💀'}</div>;
+const flipClick = ({cardIndex, playerName}) => () => {
+    store.dispatch(flipCard({playerName, cardIndex}));
+};
 
-export const Cards = ({cards}) =>
+export const Card = ({title, isVisible, clickCallback}) => {
+    return <div
+        className="card"
+        onClick={clickCallback}>{isVisible ? title : '💀'}</div>;
+};
+
+export const Cards = ({cards, playerName}) =>
     <div className="cards">
-        {cards.map(({value:title, isVisible}, index) => <Card key={index} title={title} isVisible={isVisible}/>)}
+        {cards.map(({value: title, isVisible}, index) =>
+            <Card
+                clickCallback={flipClick({cardIndex: index, playerName})}
+                key={index}
+                index={index}
+                title={title}
+                playerName={playerName}
+                isVisible={isVisible}/>)}
     </div>;

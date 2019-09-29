@@ -6,7 +6,7 @@ import {Cards} from './Cards';
 export const Player = ({playerName, cards}) =>
     <li className="player">
         <h3>{playerName}</h3>
-        <Cards cards={cards}/>
+        <Cards playerName={playerName} cards={cards}/>
     </li>;
 
 export const PlayersComponent = ({players}) =>

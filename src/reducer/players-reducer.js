@@ -19,13 +19,20 @@ const REMOVE_PLAYER = 'REMOVE_PLAYER';
 const ADD_PUNITIVE_CARD = 'ADD_PUNITIVE_CARD';
 const REMOVE_CARD = 'REMOVE_CARD';
 const CHANGE_CARD = 'CHANGE_CARD';
+const FLIP_CARD = 'FLIP_CARD';
 const START_GAME = 'START_GAME';
 
 const initialPlayerState = {
     players: {
         name: {
             name: 'Player',
-            cards: []
+            cards: [
+                {
+                    value: '',
+                    isVisible: false
+                }
+
+            ]
         }
     },
     stockCards: [],
@@ -102,6 +109,14 @@ const playersReducer = createReducer({
             ...state
         };
     },
+    [FLIP_CARD]: (state, data) => {
+        const {playerName, cardIndex} = data;
+        const {players} = state;
+        players[playerName].cards[cardIndex].isVisible = !players[playerName].cards[cardIndex].isVisible;
+        return {
+            ...state
+        };
+    },
     [START_GAME]: (state) => {
         const isVisible = false;
         const stockCards = shuffleArray(setInitialCards());
@@ -109,10 +124,10 @@ const playersReducer = createReducer({
         const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
             accPlayers.players[playerName].name = playerName;
             accPlayers.players[playerName].cards = [];
-            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
             return accPlayers;
         }, {...state});
         return {
@@ -136,7 +151,14 @@ export const addPlayer = ({name}) => ({
 export const addPunitiveCard = ({name}) => ({
     type: ADD_PUNITIVE_CARD,
     data: {
-        name,
+        name
+    }
+});
+export const flipCard = ({playerName, cardIndex}) => ({
+    type: FLIP_CARD,
+    data: {
+        playerName,
+        cardIndex
     }
 });
 export const startGame = () => ({

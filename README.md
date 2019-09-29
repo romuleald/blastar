@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 * [ ] differentiate current and other players
 * [ ] Adding a card to a player
 * [ ] Removing a card to a player
-* [ ] Flipping a card to a player
+* [x] Flipping a card to a player
 * [ ] Exchanging a card between 2 player
 * [ ] Watch own player card
 * [ ] Watch other player card
