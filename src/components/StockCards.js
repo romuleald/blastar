@@ -15,8 +15,4 @@ const mapStateToProps = (state) => {
     return {title, totalStockCards};
 };
 
-const mapDispatchToProps = (dispatch, {state}) => {
-    return {stockCard: state[PLAYERS].stockCards};
-};
-
-export const StockCard = connect(mapStateToProps, mapDispatchToProps)(StockCardsComponent);
+export const StockCard = connect(mapStateToProps)(StockCardsComponent);

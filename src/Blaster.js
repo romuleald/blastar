@@ -6,26 +6,16 @@ import {Player, Players} from './components/Players';
 import {connect, Provider} from 'react-redux';
 import {StockCard} from './components/StockCards';
 
-const HelperSelectComponent = ({players}) => {
-    // console.info({players});
-    return <select name="player" id="playerAddCardHelper">
+const HelperSelectComponent = ({players}) =>
+    <select name="player" id="playerAddCardHelper">
         {Object.keys(players).map((name, index) => {
             return <option key={index} value={name}>{name}</option>;
         })}
     </select>;
-};
 
-const mapStateToProps = (state) => {
-    console.info({state});
-    return {players: state[PLAYERS].players};
-};
+const mapStateToProps = (state) => ({players: state[PLAYERS].players});
 
-const mapDispatchToProps = (dispatch, {state}) => {
-    console.info({state});
-    return {players: state[PLAYERS].players};
-};
-
-const HelperSelect = connect(mapStateToProps, mapDispatchToProps)(HelperSelectComponent);
+const HelperSelect = connect(mapStateToProps)(HelperSelectComponent);
 
 function Blaster() {
     return (
@@ -51,11 +41,12 @@ function Blaster() {
                     <div>
                         <h3>Add card</h3>
                         player
-                        <HelperSelect state={store.getState()} />
+                        <HelperSelect state={store.getState()}/>
                         <button onClick={() => {
                             const name = document.getElementById('playerAddCardHelper').value;
-                            store.dispatch(addPunitiveCard({name}))
-                        }}>Add</button>
+                            store.dispatch(addPunitiveCard({name}));
+                        }}>Add
+                        </button>
                     </div>
                 </div>
                 <h2>Adversaires</h2>
