@@ -9,9 +9,9 @@ export const Player = ({playerName, cards}) =>
         <Cards cards={cards}/>
     </li>;
 
-export const PlayersComponent = ({players}) =>
+export const PlayersComponent = ({state}) =>
     <ul>
-        {Object.values(players)
+        {Object.values(state[PLAYERS].players)
             .map(({name, cards}) =>
                 <Player
                     key={name}
@@ -19,10 +19,8 @@ export const PlayersComponent = ({players}) =>
                     cards={cards}/>)}
     </ul>;
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => ({state});
 
-const mapDispatchToProps = (dispatch, {state}) => {
-    return state[PLAYERS];
-};
+const mapDispatchToProps = (dispatch, {state}) => state[PLAYERS];
 
 export const Players = connect(mapStateToProps, mapDispatchToProps)(PlayersComponent);
