@@ -1,24 +1,29 @@
 import React from 'react';
 import store, {flipCard} from '../reducer/players-reducer';
+import {connect} from 'react-redux';
 
-const flipClick = ({cardIndex, playerName}) => () => {
-    store.dispatch(flipCard({playerName, cardIndex}));
-};
-
-export const Card = ({title, isVisible, clickCallback}) => {
-    return <div
+export const Card = ({title, isVisible, flipCard, playerName, cardIndex}) =>
+    <div
         className="card"
-        onClick={clickCallback}>{isVisible ? title : '💀'}</div>;
-};
+        onClick={() => flipCard({playerName, cardIndex})}>
+        {isVisible ? title : '💀'}
+    </div>;
+
+const mapDispatchToProps = (dispatch) => ({
+    flipCard: ({playerName, cardIndex}) => {
+        return dispatch(flipCard({playerName, cardIndex}));
+    }
+});
+const ConnectedCard = connect(null, mapDispatchToProps)(Card);
 
 export const Cards = ({cards, playerName}) =>
     <div className="cards">
         {cards.map(({value: title, isVisible}, index) =>
-            <Card
-                clickCallback={flipClick({cardIndex: index, playerName})}
+            <ConnectedCard
                 key={index}
                 index={index}
                 title={title}
                 playerName={playerName}
+                cardIndex={index}
                 isVisible={isVisible}/>)}
     </div>;

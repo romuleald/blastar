@@ -111,10 +111,11 @@ const playersReducer = createReducer({
     },
     [FLIP_CARD]: (state, data) => {
         const {playerName, cardIndex} = data;
-        const {players} = state;
+        const clonedState = R.clone(state);
+        const {players} = clonedState;
         players[playerName].cards[cardIndex].isVisible = !players[playerName].cards[cardIndex].isVisible;
         return {
-            ...state
+            ...clonedState
         };
     },
     [START_GAME]: (state) => {
