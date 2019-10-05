@@ -113,27 +113,14 @@ const playersReducer = createReducer({
             ...clonedState
         };
     },
-    [FLIP_CARD]: (state, data) => {
-        const {playerName, cardIndex} = data;
-        const clonedState = R.clone(state);
-        const {players} = clonedState;
-        players[playerName].cards[cardIndex].isVisible = !players[playerName].cards[cardIndex].isVisible;
-        return {
-            ...clonedState
-        };
-    },
     [START_GAME]: (state) => {
-        const isVisible = false;
-        const stockCards = shuffleArray(setInitialCards());
+        let initialCards = setInitialCards().map(value => ({value, isVisible: false}));
+        const stockCards = shuffleArray(initialCards);
         const clonedState = R.clone(state);
         const players = clonedState.players;
         const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
             accPlayers.players[playerName].name = playerName;
-            accPlayers.players[playerName].cards = [];
-            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
-            accPlayers.players[playerName].cards.push({value: stockCards.shift(), isVisible});
+            accPlayers.players[playerName].cards = [stockCards.shift(), stockCards.shift(), stockCards.shift(), stockCards.shift()];
             return accPlayers;
         }, {...clonedState});
         return {

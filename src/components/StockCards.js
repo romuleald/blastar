@@ -3,16 +3,23 @@ import {connect} from 'react-redux';
 import {PLAYERS} from '../reducer/players-reducer';
 import {Card} from './Cards';
 
-export const StockCardsComponent = ({title, totalStockCards}) => <div className="stock-card">
+// Waste Card should not come from stock card
+export const StockCardsComponent = ({card, totalStockCards}) => <div className="stock-card">
     <h2>Pioche ({totalStockCards}) :</h2>
-    <Card title={title}/>
-    <Card title={title} isVisible/>
+    {
+        card && <Card title={'should be a real card from stock card'}/>
+    }
+    {
+        card && <Card title={card.value} isVisible isWasteCard/>
+    }
 </div>;
 
 const mapStateToProps = (state) => {
-    const title = state[PLAYERS].stockCards[0];
-    const totalStockCards = state[PLAYERS].stockCards.length;
-    return {title, totalStockCards};
+    let {stockCards} = state[PLAYERS];
+
+    const card = stockCards[0];
+    const totalStockCards = stockCards.length;
+    return {card, totalStockCards};
 };
 
 export const StockCard = connect(mapStateToProps)(StockCardsComponent);
