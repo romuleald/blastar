@@ -5,25 +5,25 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import shuffleArray from 'shuffle-array';
 
-const middlewares = [thunk];
+const middleware = [thunk];
 
 if (process.env.NODE_ENV === 'development') {
     const {createLogger} = require('redux-logger');
     const logger = createLogger({collapsed: true});
-    middlewares.push(logger);
+    middleware.push(logger);
 }
 
 export const PLAYERS = 'PLAYERS';
 const ADD_PLAYER = 'ADD_PLAYER';
 const REMOVE_PLAYER = 'REMOVE_PLAYER';
-const ADD_CARD = 'ADD_CARD';
+const ADD_PUNITIVE_CARD = 'ADD_PUNITIVE_CARD';
 const REMOVE_CARD = 'REMOVE_CARD';
 const CHANGE_CARD = 'CHANGE_CARD';
 const START_GAME = 'START_GAME';
 
 const initialPlayerState = {
     players: {
-        name: {
+        Player: {
             name: 'Player',
             cards: []
         }
@@ -81,22 +81,27 @@ const setInitialCards = () => R.pipe(
 
 // REDUCERS
 const playersReducer = createReducer({
-    [PLAYERS]: (state, data) => ({
-        ...state,
-        ...data
-    }),
     [ADD_PLAYER]: (state, data) => {
-        const players = state.players;
+        const clonedState = R.clone(state);
+        const players = clonedState.players;
         players[data.name] = {...data};
+        return clonedState;
+    },
+    [ADD_PUNITIVE_CARD]: (state, data) => {
+        const {name} = data;
+        const clonedState = R.clone(state);
+        const {players} = clonedState;
+        const card = clonedState.stockCards.splice(1, 1);
+        players[name].cards.push(card[0]);
         return {
-            ...state,
-            players
+            ...clonedState
         };
     },
     [START_GAME]: (state) => {
         const isVisible = false;
         const stockCards = shuffleArray(setInitialCards());
-        const players = {...state.players};
+        const clonedState = R.clone(state);
+        const players = clonedState.players;
         const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
             accPlayers.players[playerName].name = playerName;
             accPlayers.players[playerName].cards = [];
@@ -105,9 +110,9 @@ const playersReducer = createReducer({
             accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
             accPlayers.players[playerName].cards.push({value:stockCards.shift(), isVisible});
             return accPlayers;
-        }, {...state});
+        }, {...clonedState});
         return {
-            ...state,
+            ...clonedState,
             players: updatedPlayers.players,
             stockCards
         };
@@ -124,11 +129,10 @@ export const addPlayer = ({name}) => ({
     }
 });
 
-export const addCard = ({name, card}) => ({
-    type: ADD_PLAYER,
+export const addPunitiveCard = ({name}) => ({
+    type: ADD_PUNITIVE_CARD,
     data: {
         name,
-        card
     }
 });
 export const startGame = () => ({
@@ -139,6 +143,6 @@ const reducer = combineReducers({
     [PLAYERS]: playersReducer
 });
 
-export const appStore = createStore(reducer, composeWithDevTools(applyMiddleware(...middlewares)));
+export const appStore = createStore(reducer, composeWithDevTools(applyMiddleware(...middleware)));
 
 export default appStore;
