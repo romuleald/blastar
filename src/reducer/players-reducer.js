@@ -113,6 +113,15 @@ const playersReducer = createReducer({
             ...clonedState
         };
     },
+    [FLIP_CARD]: (state, data) => {
+        const {playerName, cardIndex} = data;
+        const clonedState = R.clone(state);
+        const {players} = clonedState;
+        players[playerName].cards[cardIndex].isVisible = !players[playerName].cards[cardIndex].isVisible;
+        return {
+            ...clonedState
+        };
+    },
     [START_GAME]: (state) => {
         const isVisible = false;
         const stockCards = shuffleArray(setInitialCards());
