@@ -1,16 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Todo
-* [ ] drag & drop cards
+* [ ] Card component in a single file with its Connect
+* [ ] Waste card from store
 * [ ] differentiate current and other players
 * [ ] Adding a card to a player
 * [ ] Removing a card to a player
-* [ ] Flipping a card to a player
+* [x] Flipping a card to a player
 * [ ] Exchanging a card between 2 player
 * [ ] Watch own player card
 * [ ] Watch other player card
-* [ ] BLAST button
 * [ ] Point counting
+* [ ] Card should be 2 by column
+* [ ] BLAST button
+* [ ] drag & drop cards
 
 ## Available Scripts
 
