@@ -3,7 +3,7 @@ Feature: Penalties
   Scenario: Player take penalty and a new card is added to his set
     Given 4 players
     When Player 1 take a penalty
-    Then A new card is added to is plate after the last one
+    Then A new card is added to his plate after the last one
 
   Scenario Outline: Player say blast but another player has better score
     Given 4 players

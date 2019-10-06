@@ -1,10 +1,15 @@
+import './css/index.css';
+import * as serviceWorker from './serviceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
 import Blaster from './Blaster';
-import * as serviceWorker from './serviceWorker';
+import {Provider} from 'react-redux';
+import {makeStore} from './store';
 
-ReactDOM.render(<Blaster/>, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={makeStore()}>
+        <Blaster/>
+    </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

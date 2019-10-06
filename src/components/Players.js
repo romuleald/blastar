@@ -1,26 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {PLAYERS} from '../reducer/players-reducer';
-import {Cards} from './Cards';
+import PlayerCardList from './Cards';
+import {selectPlayerList} from '../selectors/playerSelectors';
 
 export const Player = ({playerName, cards}) =>
     <li className="player">
         <h3>{playerName}</h3>
-        <Cards playerName={playerName} cards={cards}/>
+        <PlayerCardList playerName={playerName} cards={cards}/>
     </li>;
 
-export const PlayersComponent = ({state}) =>
+export const PlayerList = ({playerList}) =>
     <ul>
-        {Object.values(state[PLAYERS].players)
-            .map(({name, cards}) =>
-                <Player
-                    key={name}
-                    playerName={name}
-                    cards={cards}/>)}
+        {playerList.map(
+            ({name, cards}) => <Player
+                key={name}
+                playerName={name}
+                cards={cards} />
+        )}
     </ul>;
 
-const mapStateToProps = (state) => ({state});
+const mapStateToProps = (state) => ({
+    playerList: selectPlayerList(state)
+});
 
-const mapDispatchToProps = (dispatch, {state}) => state[PLAYERS];
-
-export const Players = connect(mapStateToProps, mapDispatchToProps)(PlayersComponent);
+export default connect(mapStateToProps)(PlayerList);

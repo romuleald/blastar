@@ -1,25 +1,27 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {PLAYERS} from '../reducer/players-reducer';
+import {selectStockCards} from '../selectors/gameSelectors';
+import {viewFirstStockCard} from '../actionCreators/playerActionCreators';
 import {Card} from './Cards';
 
-// Waste Card should not come from stock card
-export const StockCardsComponent = ({card, totalStockCards}) => <div className="stock-card">
-    <h2>Pioche ({totalStockCards}) :</h2>
-    {
-        card && <Card title={'should be a real card from stock card'}/>
-    }
-    {
-        card && <Card title={card.value} isVisible isWasteCard/>
-    }
-</div>;
+export const StockCards = ({stockCards, viewStockCard}) => (
+    <div className="stock-card">
+        <h2>Pioche ({stockCards.length})</h2>
+        {stockCards.length && (
+            <Card title={stockCards[0]}
+                actionList={[
+                    {label: 'VIEW', onClick: viewStockCard}
+                ]} />
+        )}
+    </div>
+);
 
-const mapStateToProps = (state) => {
-    let {stockCards} = state[PLAYERS];
+const mapStateToProps = state => ({
+    stockCards: selectStockCards(state)
+});
 
-    const card = stockCards[0];
-    const totalStockCards = stockCards.length;
-    return {card, totalStockCards};
-};
+const mapDispatchToProps = dispatch => ({
+    viewStockCard: () => dispatch(viewFirstStockCard())
+});
 
-export const StockCard = connect(mapStateToProps)(StockCardsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(StockCards);
