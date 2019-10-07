@@ -1,0 +1,12 @@
+export const actions = {
+    ADD_PLAYER: 'ADD_PLAYER',
+    REMOVE_PLAYER: 'REMOVE_PLAYER',
+    START_GAME_REQUEST: 'START_GAME_REQUEST',
+    START_GAME_DONE: 'START_GAME_DONE',
+    ADD_PUNITIVE_CARD: 'ADD_PUNITIVE_CARD'
+};
+
+export const DUPLICATION_CARD = 4;
+export const CARD_INDEX = 13;
+export const HERO_NUMBER = 9;
+export const BOSS_NUMBER = 4;

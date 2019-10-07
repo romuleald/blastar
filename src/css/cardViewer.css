@@ -1,0 +1,41 @@
+.card-viewer-overlay {
+    content: '';
+    position: fixed;
+    bottom: -10px;
+    left: -10px;
+    right: -10px;
+    top: -10px;
+    background-color: #333;
+    opacity: 0.8;
+    transition: opacity 0.35s 0.1s;
+    pointer-events: none;
+}
+
+.card-viewer {
+    display: none;
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+.card-viewer--visible {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 20%;
+    left: 15%;
+    max-width: 70%;
+}
+
+.card-viewer-card {
+    position: relative;
+    z-index: 1;
+}
+
+.card-viewer-card-list {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+}

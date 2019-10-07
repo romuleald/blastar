@@ -1,167 +1,93 @@
 import * as R from 'ramda';
-import {createReducer} from './create-reducer';
-import {applyMiddleware, combineReducers, createStore} from 'redux';
-import {composeWithDevTools} from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import shuffleArray from 'shuffle-array';
+import {createReducer} from '../helpers/redux';
+import {actions} from '../constants/gameConstants';
+import {actions as playerActions} from '../constants/playerConstants';
 
-const middleware = [thunk];
-
-if (process.env.NODE_ENV === 'development') {
-    const {createLogger} = require('redux-logger');
-    const logger = createLogger({collapsed: true});
-    middleware.push(logger);
-}
-
-export const PLAYERS = 'PLAYERS';
-const ADD_PLAYER = 'ADD_PLAYER';
-const REMOVE_PLAYER = 'REMOVE_PLAYER';
-const ADD_PUNITIVE_CARD = 'ADD_PUNITIVE_CARD';
-const REMOVE_CARD = 'REMOVE_CARD';
-const CHANGE_CARD = 'CHANGE_CARD';
-const FLIP_CARD = 'FLIP_CARD';
-const START_GAME = 'START_GAME';
-
-const initialPlayerState = {
-    players: {
-        Player: {
-            name: 'Player',
-            cards: [
-                {
-                    value: '',
-                    isVisible: false
-                }
-
-            ]
-        }
-    },
+const initialGameState = {
+    players: {},
     stockCards: [],
     wasteCards: [],
     roomId: 0,
-    currentPlayerName: ''
+    currentPlayerName: '',
+    isGameStarted: false,
+    isCardViewerVisible: false,
+    cardListToView: []
 };
 
-const DUPLICATION_CARD = 4;
-const CARD_INDEX = 13;
-const HERO_NUMBER = 8;
-const BOSS_NUMBER = 6;
+const defaultPlayer = {
+    initialCardNumber: 4,
+    initialCardView: 2,
+    cards: []
+};
 
-const generateHeroes = () => R.pipe(
-    shuffleArray,
-    R.take(4),
-    R.map(R.toString),
-    R.map(R.concat('0.'))
-)(R.range(0, HERO_NUMBER));
-
-const generateBosses = () => R.pipe(
-    shuffleArray,
-    R.take(2),
-    R.map(R.toString),
-    R.map(R.concat('14.'))
-)(R.range(0, BOSS_NUMBER));
-
-const setInitialCards = () => R.pipe(
-    R.map(R.add(1)),
-    R.map(R.toString),
-    R.map(
-        cardIndex => {
-            if (cardIndex === '6') {
-                return (
-                    R.zip(
-                        R.repeat(cardIndex, DUPLICATION_CARD),
-                        ['0', '0', '1', '1']
-                    )).map(R.join('.'));
+export const playersReducer = createReducer({
+    [actions.ADD_PLAYER]: (state, {name, ...params}) => ({
+        ...state,
+        players: {
+            ...state.players,
+            [name]: {
+                ...params,
+                ...defaultPlayer,
+                name
             }
-            if (cardIndex === '13') {
-                return R.zip(
-                    R.repeat(cardIndex, DUPLICATION_CARD),
-                    ['0', '1', '2', '3']
-                ).map(R.join('.'));
-            }
-            return R.repeat(cardIndex, DUPLICATION_CARD);
         }
-    ),
-    R.flatten,
-    R.concat(generateHeroes()),
-    R.concat(generateBosses())
-)(R.range(0, CARD_INDEX));
-
-// REDUCERS
-const playersReducer = createReducer({
-    [ADD_PLAYER]: (state, data) => {
+    }),
+    [actions.ADD_PUNITIVE_CARD]: (state, {name}) => {
         const clonedState = R.clone(state);
-        const players = clonedState.players;
-        players[data.name] = {...data};
+        const {players} = clonedState;
+        const firstCardValue = clonedState.stockCards.splice(0, 1);
+
+        players[name].cards.push({value: firstCardValue, isVisible: false});
+
         return clonedState;
     },
-    [ADD_PUNITIVE_CARD]: (state, data) => {
-        const {name} = data;
+    [playerActions.FLIP_CARD]: (state, {playerName, cardIndex}) => {
         const clonedState = R.clone(state);
         const {players} = clonedState;
-        const card = clonedState.stockCards.splice(1, 1);
-        players[name].cards.push(card[0]);
-        return {
-            ...clonedState
-        };
-    },
-    [FLIP_CARD]: (state, data) => {
-        const {playerName, cardIndex} = data;
-        const clonedState = R.clone(state);
-        const {players} = clonedState;
+
         players[playerName].cards[cardIndex].isVisible = !players[playerName].cards[cardIndex].isVisible;
-        return {
-            ...clonedState
-        };
+
+        return clonedState;
     },
-    [START_GAME]: (state) => {
-        let initialCards = setInitialCards().map(value => ({value, isVisible: false}));
-        const stockCards = shuffleArray(initialCards);
+    [playerActions.VIEW_PLAYER_CARD]: (state, {playerName, cardIndex}) => ({
+        ...state,
+        isCardViewerVisible: true,
+        cardListToView: [
+            state.players[playerName].cards[cardIndex]
+        ]
+    }),
+    [playerActions.VIEW_FIRST_STOCK_CARD]: state => ({
+        ...state,
+        isCardViewerVisible: true,
+        cardListToView: [{value: state.stockCards[0], isVisible: true}]
+    }),
+    [playerActions.VIEW_WASTE_CARD_LIST]: state => ({
+        ...state,
+        isCardViewerVisible: true,
+        cardListToView: state.wasteCards.map(value => ({value, isVisible: true}))
+    }),
+    [playerActions.HIDE_CARD_VIEWER]: state => ({
+        ...state,
+        isCardViewerVisible: false
+    }),
+    [playerActions.DROP_PLAYER_CARD]: (state, {playerName, cardIndex}) => {
         const clonedState = R.clone(state);
-        const players = clonedState.players;
-        const updatedPlayers = Object.keys(players).reduce((accPlayers, playerName) => {
-            accPlayers.players[playerName].name = playerName;
-            accPlayers.players[playerName].cards = [stockCards.shift(), stockCards.shift(), stockCards.shift(), stockCards.shift()];
-            return accPlayers;
-        }, {...clonedState});
-        return {
-            ...clonedState,
-            players: updatedPlayers.players,
-            stockCards
-        };
-    }
+        const {players, wasteCards} = clonedState;
 
-}, initialPlayerState);
+        const droppedCard = players[playerName].cards.splice(cardIndex, 1)[0].value;
+        wasteCards.unshift(droppedCard);
 
-// ACTIONS
-export const addPlayer = ({name}) => ({
-    type: ADD_PLAYER,
-    data: {
-        name,
-        cards: []
-    }
-});
-
-export const addPunitiveCard = ({name}) => ({
-    type: ADD_PUNITIVE_CARD,
-    data: {
-        name
-    }
-});
-export const flipCard = ({playerName, cardIndex}) => ({
-    type: FLIP_CARD,
-    data: {
-        playerName,
-        cardIndex
-    }
-});
-export const startGame = () => ({
-    type: START_GAME
-});
-
-const reducer = combineReducers({
-    [PLAYERS]: playersReducer
-});
-
-export const appStore = createStore(reducer, composeWithDevTools(applyMiddleware(...middleware)));
-
-export default appStore;
+        return clonedState;
+    },
+    [actions.START_GAME_DONE]: (state, {cardListByPlayer, stockCards, wasteCards}) => ({
+        ...state,
+        isGameStarted: true,
+        players: R.pipe(
+            R.toPairs,
+            R.map(([name, player]) => [name, R.assoc('cards', cardListByPlayer[name])(player)]),
+            R.fromPairs
+        )(state.players),
+        stockCards,
+        wasteCards
+    })
+}, initialGameState);
