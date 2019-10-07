@@ -2,8 +2,9 @@ import * as R from 'ramda';
 import {createReducer} from '../helpers/redux';
 import {actions} from '../constants/gameConstants';
 import {actions as playerActions} from '../constants/playerConstants';
+import {BlastarState, Player} from "./players-reducer.type";
 
-const initialGameState = {
+const initialGameState: BlastarState = {
     players: {},
     stockCards: [],
     wasteCards: [],
@@ -14,14 +15,14 @@ const initialGameState = {
     cardListToView: []
 };
 
-const defaultPlayer = {
+const defaultPlayer: Player = {
     initialCardNumber: 4,
     initialCardView: 2,
     cards: []
 };
 
 export const playersReducer = createReducer({
-    [actions.ADD_PLAYER]: (state, {name, ...params}) => ({
+    [actions.ADD_PLAYER]: (state: BlastarState, {name, ...params}) => ({
         ...state,
         players: {
             ...state.players,
@@ -32,7 +33,7 @@ export const playersReducer = createReducer({
             }
         }
     }),
-    [actions.ADD_PUNITIVE_CARD]: (state, {name}) => {
+    [actions.ADD_PUNITIVE_CARD]: (state: BlastarState, {name}) => {
         const clonedState = R.clone(state);
         const {players} = clonedState;
         const firstCardValue = clonedState.stockCards.splice(0, 1);
@@ -41,7 +42,7 @@ export const playersReducer = createReducer({
 
         return clonedState;
     },
-    [playerActions.FLIP_CARD]: (state, {playerName, cardIndex}) => {
+    [playerActions.FLIP_CARD]: (state: BlastarState, {playerName, cardIndex}) => {
         const clonedState = R.clone(state);
         const {players} = clonedState;
 
@@ -49,14 +50,14 @@ export const playersReducer = createReducer({
 
         return clonedState;
     },
-    [playerActions.VIEW_PLAYER_CARD]: (state, {playerName, cardIndex}) => ({
+    [playerActions.VIEW_PLAYER_CARD]: (state: BlastarState, {playerName, cardIndex}) => ({
         ...state,
         isCardViewerVisible: true,
         cardListToView: [
             state.players[playerName].cards[cardIndex]
         ]
     }),
-    [playerActions.VIEW_FIRST_STOCK_CARD]: state => ({
+    [playerActions.VIEW_FIRST_STOCK_CARD]: (state: BlastarState) => ({
         ...state,
         isCardViewerVisible: true,
         cardListToView: [{value: state.stockCards[0], isVisible: true}]
@@ -66,11 +67,11 @@ export const playersReducer = createReducer({
         isCardViewerVisible: true,
         cardListToView: state.wasteCards.map(value => ({value, isVisible: true}))
     }),
-    [playerActions.HIDE_CARD_VIEWER]: state => ({
+    [playerActions.HIDE_CARD_VIEWER]: (state: BlastarState) => ({
         ...state,
         isCardViewerVisible: false
     }),
-    [playerActions.DROP_PLAYER_CARD]: (state, {playerName, cardIndex}) => {
+    [playerActions.DROP_PLAYER_CARD]: (state: BlastarState, {playerName, cardIndex}) => {
         const clonedState = R.clone(state);
         const {players, wasteCards} = clonedState;
 

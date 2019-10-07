@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
     "clsx": "^1.0.4",
     "ramda": "^0.26.1",
     "react": "^16.9.0",
@@ -35,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^2.3.2",
+    "typescript": "^3.6.3"
   }
 }

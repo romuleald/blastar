@@ -8,7 +8,8 @@ export const StockCards = ({stockCards, viewStockCard}) => (
     <div className="stock-card">
         <h2>Pioche ({stockCards.length})</h2>
         {stockCards.length && (
-            <Card title={stockCards[0]}
+            <Card
+                title={stockCards[0]}
                 actionList={[
                     {label: 'VIEW', onClick: viewStockCard}
                 ]} />
