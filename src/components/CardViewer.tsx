@@ -32,7 +32,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    hideCardViewer: () => dispatch(hideCardViewer())
+    hideCardViewerAction: () => dispatch(hideCardViewer())
 });
 
 export default connect(
