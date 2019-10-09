@@ -14,8 +14,4 @@ if (process.env.NODE_ENV === 'development') {
     middleware.push(logger);
 }
 
-export const makeStore = () =>
-    createStore(
-        rootReducer,
-        composeWithDevTools(applyMiddleware(...middleware))
-    );
+export const makeStore = () => createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));

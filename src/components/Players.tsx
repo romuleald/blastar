@@ -3,23 +3,22 @@ import {connect} from 'react-redux';
 import PlayerCardList from './Cards';
 import {selectPlayerList} from '../selectors/playerSelectors';
 
-export const Player = ({playerName, cards}) =>
+export const Player = ({playerName, cards}) => (
     <li className="player">
         <h3>{playerName}</h3>
-        <PlayerCardList playerName={playerName} cards={cards}/>
-    </li>;
+        <PlayerCardList playerName={playerName} cards={cards} />
+    </li>
+);
 
-export const PlayerList = ({playerList}) =>
+export const PlayerList = ({playerList}) => (
     <ul>
-        {playerList.map(
-            ({name, cards}) => <Player
-                key={name}
-                playerName={name}
-                cards={cards} />
-        )}
-    </ul>;
+        {playerList.map(({name, cards}) => (
+            <Player key={name} playerName={name} cards={cards} />
+        ))}
+    </ul>
+);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     playerList: selectPlayerList(state)
 });
 

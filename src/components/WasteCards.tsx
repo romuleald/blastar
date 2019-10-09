@@ -8,17 +8,12 @@ export const WasteCards = ({wasteCards, viewCardList}) => (
     <div className="stock-card">
         <h2>Defausse ({wasteCards.length})</h2>
         {wasteCards.length && (
-            <Card
-                title={wasteCards[0]}
-                isVisible
-                actionList={[
-                    {label: 'VIEW', onClick: viewCardList}
-                ]} />
+            <Card title={wasteCards[0]} isVisible actionList={[{label: 'VIEW', onClick: viewCardList}]} />
         )}
     </div>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     wasteCards: selectWasteCards(state)
 });
 
@@ -26,4 +21,7 @@ const mapDispatchToProps = dispatch => ({
     viewCardList: () => dispatch(viewWasteCardList())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WasteCards);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(WasteCards);

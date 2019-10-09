@@ -13,14 +13,8 @@ const AddNewPlayer = ({addPlayerAction}) => {
     return (
         <div>
             <h3>Add player</h3>
-            <input
-                type="text"
-                defaultValue={newPlayerName}
-                onChange={event => setNewPlayerName(event.target.value)}
-            />
-            <button onClick={() => addPlayerAction(newPlayerName)}>
-                Add Player
-            </button>
+            <input type="text" defaultValue={newPlayerName} onChange={event => setNewPlayerName(event.target.value)} />
+            <button onClick={() => addPlayerAction(newPlayerName)}>Add Player</button>
         </div>
     );
 };
