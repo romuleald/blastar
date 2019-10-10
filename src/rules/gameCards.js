@@ -1,6 +1,6 @@
 import lola from './cardPicture/lola.png';
 import leo from './cardPicture/leo.png';
-import carol from './cardPicture/carol.png'
+import carol from './cardPicture/carol.png';
 import enzo from './cardPicture/enzo.png';
 import jimbo from './cardPicture/jimbo.png';
 import stephania from './cardPicture/stephania.png';
@@ -76,11 +76,11 @@ export const gameCards = {
         numberPicture: zero,
         endGamePower: {
             need: [],
-            selfEffect: (cardList) => {
+            selfEffect: cardList => {
                 const isEnzoVisible = cardList.find(({value}) => value === '0.1').isVisible;
                 return isEnzoVisible
                     ? {initialCardView: 1}
-                    : {initialCardNumber: 3}
+                    : {initialCardNumber: 3};
             }
         }
     },
@@ -90,7 +90,7 @@ export const gameCards = {
         numberPicture: zero,
         endGamePower: {
             need: [],
-            selfEffect: (cardList) => ({
+            selfEffect: cardList => ({
                 initialCardNumber: cardList.length,
                 initialCardView: 0
             })
