@@ -10,3 +10,6 @@ export const DUPLICATION_CARD = 4;
 export const CARD_INDEX = 13;
 export const HERO_NUMBER = 9;
 export const BOSS_NUMBER = 4;
+
+export const NUMBER_OF_HEROES_IN_A_GAME = 4;
+export const NUMBER_OF_BOSSES_IN_A_GAME = 2;

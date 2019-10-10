@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {selectPlayerList} from '../selectors/playerSelectors';
 import {addPunitiveCard} from '../actionCreators/gameActionCreators';
 
-const HelperSelectComponent = ({playerList, addPunitiveCardAction}) => {
+const _HelperSelect = ({playerList, addPunitiveCardAction}) => {
     const firstPlayerName = R.pathOr(null, [0, 'name'], playerList);
     const [playerName, setPlayerName] = React.useState(firstPlayerName);
 
@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
     addPunitiveCardAction: playerName => playerName && dispatch(addPunitiveCard({name: playerName}))
 });
 
-export default connect(
+export const HelperSelect = connect(
     mapStateToProps,
     mapDispatchToProps
-)(HelperSelectComponent);
+)(_HelperSelect);

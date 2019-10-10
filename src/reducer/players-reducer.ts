@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import {createReducer} from '../helpers/redux';
 import {actions} from '../constants/gameConstants';
 import {actions as playerActions} from '../constants/playerConstants';
-import {BlastarState, PlayerState} from './players-reducer.type';
+import {BlastarState, PlayerState, CardState} from './players-reducer.type';
 
 const initialGameState: BlastarState = {
     players: {},
@@ -15,7 +15,7 @@ const initialGameState: BlastarState = {
     cardListToView: []
 };
 
-const defaultPlayer: PlayerState = {
+const defaultPlayer: Omit<PlayerState, 'name'> = {
     initialCardNumber: 4,
     initialCardView: 2,
     cards: []
@@ -37,7 +37,8 @@ export const playersReducer = createReducer<BlastarState>(
         [actions.ADD_PUNITIVE_CARD]: (state, {name}) => {
             const clonedState = R.clone(state);
             const {players} = clonedState;
-            const firstCardValue = clonedState.stockCards.splice(0, 1);
+            // TODO: Will crash if there is no stockCard anymore
+            const firstCardValue = clonedState.stockCards.splice(0, 1)[0];
 
             players[name].cards.push({value: firstCardValue, isVisible: false});
 
@@ -82,7 +83,26 @@ export const playersReducer = createReducer<BlastarState>(
 
             return clonedState;
         },
-        [actions.START_GAME_DONE]: (state, {cardListByPlayer, stockCards, wasteCards}) => ({
+        [playerActions.END_PLAYER_TURN]: state => {
+            const playerNameList = Object.keys(state.players);
+            const currentPlayerIndex = playerNameList.indexOf(state.currentPlayerName);
+            return {
+                ...state,
+                currentPlayerName: playerNameList[(currentPlayerIndex + 1) % playerNameList.length]
+            };
+        },
+        [actions.START_GAME_DONE]: (
+            state,
+            {
+                cardListByPlayer,
+                stockCards,
+                wasteCards
+            }: {
+                cardListByPlayer: {[name: string]: CardState[]};
+                stockCards: string[];
+                wasteCards: string[];
+            }
+        ) => ({
             ...state,
             isGameStarted: true,
             players: R.pipe(
@@ -91,7 +111,8 @@ export const playersReducer = createReducer<BlastarState>(
                 R.fromPairs
             )(state.players),
             stockCards,
-            wasteCards
+            wasteCards,
+            currentPlayerName: Object.keys(state.players)[0]
         })
     },
     initialGameState

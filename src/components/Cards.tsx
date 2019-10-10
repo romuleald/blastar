@@ -6,8 +6,13 @@ import {gameCards} from '../rules/gameCards';
 import hiddenCardIllustration from './logo_radioactif.png';
 import {CardState} from '../reducer/players-reducer.type';
 
-const GameCard = ({title, isVisible, children}) => {
-    const picture = R.path([title, 'picture'], gameCards);
+type GameCardProps = {
+    title: string;
+    isVisible: boolean;
+};
+
+const GameCard: React.FC<GameCardProps> = ({title, isVisible, children}) => {
+    const picture: string | undefined = R.path([title, 'picture'], gameCards);
     return (
         <div className="card-container">
             <div className="card">
@@ -26,6 +31,7 @@ type Actions = {
     label: string;
     onClick;
 };
+
 type CardProps = {
     title: string;
     isVisible?: boolean;
@@ -46,6 +52,7 @@ type ActionCallBackType = {
     playerName: string;
     cardIndex: number;
 };
+
 type PlayerCardListProps = {
     cards: CardState[];
     playerName: string;
@@ -53,7 +60,8 @@ type PlayerCardListProps = {
     viewPlayerCardAction: (ActionCallBackType) => {};
     dropPlayerCardAction: (ActionCallBackType) => {};
 };
-export const PlayerCardList: React.FC<PlayerCardListProps> = ({
+
+const _PlayerCardList: React.FC<PlayerCardListProps> = ({
     cards,
     playerName,
     flipCardAction,
@@ -82,7 +90,7 @@ const mapDispatchToProps = dispatch => ({
     dropPlayerCardAction: ({playerName, cardIndex}) => () => dispatch(dropPlayerCard({playerName, cardIndex}))
 });
 
-export default connect(
+export const PlayerCardList = connect(
     null,
     mapDispatchToProps
-)(PlayerCardList);
+)(_PlayerCardList);

@@ -4,19 +4,19 @@ export type CardState = {
 };
 
 export type PlayerState = {
-    name?: string;
+    name: string;
     initialCardNumber: number;
     initialCardView: number;
     cards: CardState[];
 };
 
 export type BlastarState = {
-    players: {Player?};
-    stockCards: CardState[];
-    wasteCards: CardState[];
+    players: {[playerName: string]: PlayerState};
+    stockCards: string[];
+    wasteCards: string[];
     roomId: number;
     currentPlayerName: string;
     isGameStarted: boolean;
-    isCardViewerVisible: false;
+    isCardViewerVisible: boolean;
     cardListToView: CardState[];
 };

@@ -1,12 +1,12 @@
 import './css/main.css';
 import React from 'react';
+import background from './background.jpg';
 import {addPlayer, startGame} from './actionCreators/gameActionCreators';
 import {connect} from 'react-redux';
-import HelperSelect from './components/HelperSelect';
+import {HelperSelect} from './components/HelperSelect';
 import {GameBoard} from './components/GameBoard';
-import background from './background.jpg';
 import {defaultPlayerName} from './constants/playerConstants';
-import CardViewer from './components/CardViewer';
+import {CardViewer} from './components/CardViewer';
 
 const AddNewPlayer = ({addPlayerAction}) => {
     const [newPlayerName, setNewPlayerName] = React.useState(defaultPlayerName);
@@ -26,7 +26,7 @@ const StartGame = ({startGameAction}) => (
     </div>
 );
 
-const Blaster = ({addPlayerAction, startGameAction, isGameStarted}) => (
+const _Blaster = ({addPlayerAction, startGameAction, isGameStarted}) => (
     <div className="App">
         <img className="game-background" src={background} alt="background" />
         <header>Title/Header</header>
@@ -50,7 +50,7 @@ const mapDispatchToProps = dispatch => ({
     startGameAction: () => dispatch(startGame())
 });
 
-export default connect(
+export const Blaster = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Blaster);
+)(_Blaster);

@@ -2,29 +2,13 @@
   "name": "blastar",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.11",
-    "@types/react": "^16.9.5",
-    "@types/react-dom": "^16.9.1",
-    "clsx": "^1.0.4",
-    "ramda": "^0.26.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-redux": "^7.1.1",
-    "react-scripts": "^3.2.0",
-    "redux": "^4.0.4",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "shuffle-array": "^1.0.1"
-  },
   "scripts": {
-    "lintjs": "eslint ./src/*.{ts,tsx}",
+    "lintjs": "eslint ./src/**/*.{js,ts,tsx}",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "typecheck": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,7 +25,25 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "clsx": "^1.0.4",
+    "ramda": "^0.26.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-redux": "^7.1.1",
+    "react-scripts": "^3.2.0",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "shuffle-array": "^1.0.1"
+  },
   "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "@types/ramda": "^0.26.29",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "eslint-config-prettier": "^6.4.0",
@@ -49,8 +51,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.17.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-unicorn": "^12.0.2",
+    "eslint-plugin-unicorn": "^12.1.0",
     "prettier": "^1.18.2",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.4"
   }
 }
