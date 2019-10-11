@@ -14,7 +14,7 @@ export const startGame = () => ({
     type: actions.START_GAME_REQUEST
 });
 
-export const startGameDone = (data) => ({
+export const startGameDone = data => ({
     type: actions.START_GAME_DONE,
     data
 });

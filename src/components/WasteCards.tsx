@@ -4,7 +4,7 @@ import {selectWasteCards} from '../selectors/gameSelectors';
 import {Card} from './Cards';
 import {viewWasteCardList} from '../actionCreators/playerActionCreators';
 
-export const WasteCards = ({wasteCards, viewCardList}) => (
+const _WasteCards = ({wasteCards, viewCardList}) => (
     <div className="stock-card">
         <h2>Defausse ({wasteCards.length})</h2>
         {wasteCards.length && (
@@ -21,7 +21,7 @@ const mapDispatchToProps = dispatch => ({
     viewCardList: () => dispatch(viewWasteCardList())
 });
 
-export default connect(
+export const WasteCards = connect(
     mapStateToProps,
     mapDispatchToProps
-)(WasteCards);
+)(_WasteCards);

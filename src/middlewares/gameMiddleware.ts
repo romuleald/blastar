@@ -1,25 +1,31 @@
 import * as R from 'ramda';
 import shuffleArray from 'shuffle-array';
-import {actions, HERO_NUMBER, BOSS_NUMBER, CARD_INDEX, DUPLICATION_CARD} from '../constants/gameConstants';
+import {
+    actions,
+    HERO_NUMBER,
+    BOSS_NUMBER,
+    CARD_INDEX,
+    DUPLICATION_CARD,
+    NUMBER_OF_HEROES_IN_A_GAME,
+    NUMBER_OF_BOSSES_IN_A_GAME
+} from '../constants/gameConstants';
+import {CardState} from './../reducer/players-reducer.type';
 import {createMiddleware} from '../helpers/redux';
 import {selectPlayerList} from '../selectors/playerSelectors';
 import {startGameDone} from '../actionCreators/gameActionCreators';
 
-const generateHeroes = () =>
+const generateCardIds = (totalNumberInTheGame: number, numberInAGameSession: number, id: number) =>
     R.pipe(
+        R.range(0),
         shuffleArray,
-        R.take(4),
+        R.take(numberInAGameSession),
         R.map(R.toString),
-        R.map(R.concat('0.'))
-    )(R.range(0, HERO_NUMBER));
+        R.map(R.concat(`${id.toString()}.`))
+    )(totalNumberInTheGame);
 
-const generateBosses = () =>
-    R.pipe(
-        shuffleArray,
-        R.take(2),
-        R.map(R.toString),
-        R.map(R.concat('14.'))
-    )(R.range(0, BOSS_NUMBER));
+const generateHeroes = () => generateCardIds(HERO_NUMBER, NUMBER_OF_HEROES_IN_A_GAME, 0);
+
+const generateBosses = () => generateCardIds(BOSS_NUMBER, NUMBER_OF_BOSSES_IN_A_GAME, 14);
 
 const generateStockCards = () =>
     R.pipe(
@@ -39,22 +45,29 @@ const generateStockCards = () =>
         R.flatten,
         R.concat(generateHeroes()),
         R.concat(generateBosses()),
+        // Add Lola, Leo, Hyperion
         R.concat(['-1.0', '-1.1', '15'])
     )(R.range(0, CARD_INDEX));
 
 export const gameMiddleware = createMiddleware({
     [actions.START_GAME_REQUEST]: ({store, next, action}) => {
         next(action);
-        const stockCards = shuffleArray(generateStockCards());
+        const stockCards: string[] = shuffleArray(generateStockCards());
         const playerList = selectPlayerList(store.getState());
-        const cardList = playerList.map(({name, initialCardNumber}) => [
-            name,
-            stockCards.splice(0, initialCardNumber).map(value => ({value, isVisible: false}))
-        ]);
+        const cardListByPlayer: {[name: string]: CardState[]} = playerList.reduce(
+            (result, {name, initialCardNumber}) => {
+                const playerCardList = stockCards
+                    .splice(0, initialCardNumber)
+                    .map(value => ({value, isVisible: false}));
+                result[name] = playerCardList;
+                return result;
+            },
+            {}
+        );
         const wasteCards = stockCards.splice(0, 1);
         store.dispatch(
             startGameDone({
-                cardListByPlayer: R.fromPairs(cardList),
+                cardListByPlayer,
                 wasteCards,
                 stockCards
             })

@@ -1,10 +1,10 @@
 import './css/index.css';
 import * as serviceWorker from './serviceWorker';
-import Blaster from './Blaster';
-import {makeStore} from './store';
-import {Provider} from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Blaster} from './Blaster';
+import {makeStore} from './store';
+import {Provider} from 'react-redux';
 
 ReactDOM.render(
     <Provider store={makeStore()}>

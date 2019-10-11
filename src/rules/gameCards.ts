@@ -78,9 +78,7 @@ export const gameCards = {
             need: [],
             selfEffect: cardList => {
                 const isEnzoVisible = cardList.find(({value}) => value === '0.1').isVisible;
-                return isEnzoVisible
-                    ? {initialCardView: 1}
-                    : {initialCardNumber: 3};
+                return isEnzoVisible ? {initialCardView: 1} : {initialCardNumber: 3};
             }
         }
     },

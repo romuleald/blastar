@@ -162,6 +162,9 @@
     // Make sure for-in loops have an if statement
     // https://eslint.org/docs/rules/guard-for-in
     "guard-for-in": "error",
+    // Consistent export
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-default-export.md
+    "import/no-default-export": "error",
     // Forbids the use of mutable exports with var or let.
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md
     "import/no-mutable-exports": "error",
@@ -552,7 +555,7 @@
     "no-undef-init": "error",
     // Disallow dangling underscores in identifiers
     // https://eslint.org/docs/rules/no-underscore-dangle
-    "no-underscore-dangle": "warn",
+    "no-underscore-dangle": "off",
     // Disallow unmodified conditions of loops
     // https://eslint.org/docs/rules/no-unmodified-loop-condition
     "no-unmodified-loop-condition": "error",

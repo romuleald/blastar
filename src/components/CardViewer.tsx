@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {hideCardViewer} from '../actionCreators/playerActionCreators';
 import {selectCardListToView, selectIsCardViewerVisible} from '../selectors/cardViewerSelectors';
 
-export const CardViewer = ({isCardViewerVisible, cardList = [], hideCardViewerAction}) => (
+const _CardViewer = ({isCardViewerVisible, cardList = [], hideCardViewerAction}) => (
     <div
         className={classNames({
             'card-viewer': true,
@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
     hideCardViewerAction: () => dispatch(hideCardViewer())
 });
 
-export default connect(
+export const CardViewer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(CardViewer);
+)(_CardViewer);

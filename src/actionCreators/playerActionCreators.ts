@@ -29,3 +29,7 @@ export const dropPlayerCard = ({playerName, cardIndex}) => ({
     type: actions.DROP_PLAYER_CARD,
     data: {playerName, cardIndex}
 });
+
+export const endPlayerTurn = () => ({
+    type: actions.END_PLAYER_TURN
+});
