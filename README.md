@@ -15,6 +15,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 * [ ] BLAST button
 * [ ] drag & drop cards
 
+## Docker
+To start the container
+
+docker-compose up
+
+To start the container in background
+
+docker-compose build && docker-compose up -d
+
 ## Available Scripts
 
 In the project directory, you can run:
