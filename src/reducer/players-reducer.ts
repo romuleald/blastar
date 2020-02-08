@@ -96,11 +96,13 @@ export const playersReducer = createReducer<BlastarState>(
             {
                 cardListByPlayer,
                 stockCards,
-                wasteCards
+                wasteCards,
+                roomId
             }: {
                 cardListByPlayer: {[name: string]: CardState[]};
                 stockCards: string[];
                 wasteCards: string[];
+                roomId: number;
             }
         ) => ({
             ...state,
@@ -112,6 +114,7 @@ export const playersReducer = createReducer<BlastarState>(
             )(state.players),
             stockCards,
             wasteCards,
+            roomId,
             currentPlayerName: Object.keys(state.players)[0]
         })
     },

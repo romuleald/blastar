@@ -12,7 +12,8 @@ import {
 import {CardState} from './../reducer/players-reducer.type';
 import {createMiddleware} from '../helpers/redux';
 import {selectPlayerList} from '../selectors/playerSelectors';
-import {startGameDone} from '../actionCreators/gameActionCreators';
+import {startGameDone, roomIdRequest} from '../actionCreators/gameActionCreators';
+import { getRoomId } from '../sockets/room-socket';
 
 const generateCardIds = (totalNumberInTheGame: number, numberInAGameSession: number, id: number) =>
     R.pipe(
@@ -52,6 +53,8 @@ const generateStockCards = () =>
 export const gameMiddleware = createMiddleware({
     [actions.START_GAME_REQUEST]: ({store, next, action}) => {
         next(action);
+        store.dispatch(roomIdRequest());
+        getRoomId();
         const stockCards: string[] = shuffleArray(generateStockCards());
         const playerList = selectPlayerList(store.getState());
         const cardListByPlayer: {[name: string]: CardState[]} = playerList.reduce(
