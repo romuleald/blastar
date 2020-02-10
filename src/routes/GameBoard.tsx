@@ -1,7 +1,7 @@
 import React from 'react';
-import {PlayerList} from './Players';
-import {StockCards} from './StockCards';
-import {WasteCards} from './WasteCards';
+import { PlayerList } from '../components/Players';
+import { StockCards } from '../components/StockCards';
+import { WasteCards } from '../components/WasteCards';
 
 export const GameBoard = () => (
     <>

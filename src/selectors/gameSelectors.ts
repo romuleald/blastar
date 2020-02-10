@@ -4,3 +4,5 @@ import {PLAYERS} from '../constants/reducerKeys';
 export const selectStockCards = R.path([PLAYERS, 'stockCards']);
 
 export const selectWasteCards = R.path([PLAYERS, 'wasteCards']);
+
+export const getRoomId = R.path([PLAYERS, 'roomId']);

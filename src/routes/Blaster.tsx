@@ -1,14 +1,14 @@
-import './css/main.css';
+import '../css/main.css';
 import React from 'react';
-import background from './background.jpg';
-import {addPlayer, startGame} from './actionCreators/gameActionCreators';
-import {connect} from 'react-redux';
-import {HelperSelect} from './components/HelperSelect';
-import {GameBoard} from './components/GameBoard';
-import {defaultPlayerName} from './constants/playerConstants';
-import {CardViewer} from './components/CardViewer';
+import background from '../background.jpg';
+import { addPlayer, startGame } from '../actionCreators/gameActionCreators';
+import { connect } from 'react-redux';
+import { HelperSelect } from '../components/HelperSelect';
+import { GameBoard } from './GameBoard';
+import { defaultPlayerName } from '../constants/playerConstants';
+import { CardViewer } from '../components/CardViewer';
 
-const AddNewPlayer = ({addPlayerAction}) => {
+const AddNewPlayer = ({ addPlayerAction }) => {
     const [newPlayerName, setNewPlayerName] = React.useState(defaultPlayerName);
     return (
         <div>
@@ -19,14 +19,14 @@ const AddNewPlayer = ({addPlayerAction}) => {
     );
 };
 
-const StartGame = ({startGameAction}) => (
+const StartGame = ({ startGameAction }) => (
     <div>
         <h3>Start game</h3>
         <button onClick={() => startGameAction()}>Start</button>
     </div>
 );
 
-const _Blaster = ({addPlayerAction, startGameAction, isGameStarted}) => (
+const _Blaster = ({ addPlayerAction, startGameAction, isGameStarted }) => (
     <div className="App">
         <img className="game-background" src={background} alt="background" />
         <header>Title/Header</header>
@@ -46,7 +46,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addPlayerAction: playerName => dispatch(addPlayer({name: playerName})),
+    addPlayerAction: playerName => dispatch(addPlayer({ name: playerName })),
     startGameAction: () => dispatch(startGame())
 });
 
