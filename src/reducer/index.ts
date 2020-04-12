@@ -1,7 +1,9 @@
 import {playersReducer} from './players-reducer';
 import {combineReducers} from 'redux';
-import {PLAYERS} from '../constants/reducerKeys';
+import {PLAYERS, ROOM} from '../constants/reducerKeys';
+import {roomReducer} from './room.reducer';
 
 export const rootReducer = combineReducers({
-    [PLAYERS]: playersReducer
+    [PLAYERS]: playersReducer,
+    [ROOM]: roomReducer
 });

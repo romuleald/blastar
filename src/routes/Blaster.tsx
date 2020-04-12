@@ -1,14 +1,16 @@
 import '../css/main.css';
 import React from 'react';
 import background from '../background.jpg';
-import { addPlayer, startGame } from '../actionCreators/gameActionCreators';
-import { connect } from 'react-redux';
-import { HelperSelect } from '../components/HelperSelect';
-import { GameBoard } from './GameBoard';
-import { defaultPlayerName } from '../constants/playerConstants';
-import { CardViewer } from '../components/CardViewer';
+import {addPlayer, startGame} from '../actionCreators/gameActionCreators';
+import {connect} from 'react-redux';
+import {HelperSelect} from '../components/HelperSelect';
+import {defaultPlayerName} from '../constants/playerConstants';
+import {CardViewer} from '../components/CardViewer';
+import {Redirect} from 'react-router-dom';
+import {getRoomId} from '../selectors/gameSelectors';
+import {StartJumbotron} from '../components/StartJumboTron';
 
-const AddNewPlayer = ({ addPlayerAction }) => {
+const AddNewPlayer = ({addPlayerAction}) => {
     const [newPlayerName, setNewPlayerName] = React.useState(defaultPlayerName);
     return (
         <div>
@@ -19,34 +21,39 @@ const AddNewPlayer = ({ addPlayerAction }) => {
     );
 };
 
-const StartGame = ({ startGameAction }) => (
+const startGameAndRedirect = (startGameAction, roomId) =>
+    new Promise(resolve => {
+        startGameAction();
+        resolve();
+    }).then(() => <Redirect to={{pathname: `room/${roomId}`, state: {from: '/'}}} />);
+
+const StartGame = ({roomId, startGameAction}) => (
     <div>
         <h3>Start game</h3>
-        <button onClick={() => startGameAction()}>Start</button>
+        <button onClick={() => startGameAndRedirect(startGameAction, roomId)}>Start</button>
     </div>
 );
 
-const _Blaster = ({ addPlayerAction, startGameAction, isGameStarted }) => (
+const _Blaster = ({addPlayerAction, startGameAction, roomId}) => (
     <div className="App">
         <img className="game-background" src={background} alt="background" />
-        <header>Title/Header</header>
         <div className="dev-helpers">
             <h2>Dev Helpers</h2>
             <AddNewPlayer addPlayerAction={addPlayerAction} />
-            <StartGame startGameAction={startGameAction} />
+            <StartGame roomId={roomId} startGameAction={startGameAction} />
             <HelperSelect />
         </div>
-        {isGameStarted && <GameBoard />}
+        <StartJumbotron />
         <CardViewer />
     </div>
 );
 
 const mapStateToProps = state => ({
-    isGameStarted: state.PLAYERS.isGameStarted
+    roomId: getRoomId(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    addPlayerAction: playerName => dispatch(addPlayer({ name: playerName })),
+    addPlayerAction: playerName => dispatch(addPlayer({name: playerName})),
     startGameAction: () => dispatch(startGame())
 });
 

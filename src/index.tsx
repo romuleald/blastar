@@ -1,15 +1,30 @@
 import './css/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { makeStore } from './store';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from "react-router-dom";
-import { Root } from './routes';
+import {makeStore} from './store';
+import {Provider} from 'react-redux';
+import {BrowserRouter as Router} from 'react-router-dom';
+import {Root} from './routes';
+import {ThemeProvider, CSSReset, theme} from '@chakra-ui/core';
 
+const customTheme = {
+    ...theme,
+    colors: {
+        ...theme.colors,
+        brand: {
+            900: '#1a365d',
+            800: '#153e75',
+            700: '#2a69ac'
+        }
+    }
+};
 ReactDOM.render(
     <Provider store={makeStore()}>
         <Router>
-            <Root />
+            <ThemeProvider theme={customTheme}>
+                <CSSReset />
+                <Root />
+            </ThemeProvider>
         </Router>
     </Provider>,
     document.getElementById('root')
@@ -34,5 +49,4 @@ if (process.env.NODE_ENV === 'production') {
             );
         });
     }
-
 }

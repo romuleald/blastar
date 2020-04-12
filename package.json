@@ -26,7 +26,12 @@
     ]
   },
   "dependencies": {
+    "@chakra-ui/core": "^0.7.0",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
     "clsx": "^1.0.4",
+    "emotion-theming": "^10.0.27",
+    "formik": "^2.1.4",
     "ramda": "^0.26.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",

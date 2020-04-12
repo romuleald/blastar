@@ -16,7 +16,8 @@
   "env": {
     "browser": true,
     "jasmine": true,
-    "jest": true
+    "jest": true,
+    "node": true
   },
   "rules": {
     // Enforce line breaks after opening and before closing array brackets
@@ -290,7 +291,7 @@
     ],
     // Disallow use of console
     // https://eslint.org/docs/rules/no-console
-    "no-console": "error",
+    "no-console": "warn",
     // Disallow modifying variables that are declared using const
     // https://eslint.org/docs/rules/no-const-assign
     "no-const-assign": "error",
